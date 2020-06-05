@@ -20,10 +20,6 @@
 #include "../nSkinz/Utilities/vmt_smart_hook.hpp"
 #include "../SDK/GameEvent.h"
 
-std::vector<SkinChanger::PaintKit> SkinChanger::skinKits;
-std::vector<SkinChanger::PaintKit> SkinChanger::gloveKits;
-std::vector<SkinChanger::PaintKit> SkinChanger::stickerKits{ {0, "None"} };
-
 void SkinChanger::initializeKits() noexcept
 {
     std::ifstream items{ "csgo/scripts/items/items_game_cdn.txt" };
@@ -156,6 +152,8 @@ static void apply_config_on_attributable_item(Entity* item, const item_setting* 
 
     if (config->quality)
         item->entityQuality() = config->quality;
+    else if (is_knife(item->itemDefinitionIndex()))
+        item->entityQuality() = 3; // make a star appear on knife
 
     if (config->custom_name[0])
         strcpy_s(item->customName(), config->custom_name);
